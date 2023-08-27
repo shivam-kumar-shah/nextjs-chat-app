@@ -9,6 +9,7 @@ export default async function UsersLayout({
 }) {
   const users = await getUsers();
 
+  // REMEMBER: Good technique to add a responsive sidebar by making it the parent of whole pages content
   return (
     <Sidebar>
       <div className="h-full">
