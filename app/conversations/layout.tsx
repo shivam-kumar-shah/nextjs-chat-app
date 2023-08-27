@@ -1,6 +1,5 @@
 import getConversations from "../actions/getConversations";
 import Sidebar from "../components/sidebar/Sidebar";
-import { FullMessageType } from "../types";
 import ConversationList from "./components/ConversationList";
 
 export default async function ConversationsLayout({
