@@ -1,5 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 
+//TODO:Revisit this
 export default withAuth({
   pages: {
     signIn: "/",
@@ -7,5 +8,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/users/:path*"],
+  matcher: ["/users/:path*", "/conversations/:path*"],
 };
