@@ -1,11 +1,13 @@
 "use client";
 import Avatar from "@/app/components/Avatar";
+import Modal from "@/app/components/Modal";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import { Transition, Dialog } from "@headlessui/react";
 import { Conversation, User } from "@prisma/client";
 import { format } from "date-fns";
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import { IoClose, IoTrash } from "react-icons/io5";
+import ConfirmModal from "./ConfirmModal";
 
 interface ProfileDrawerProps {
   isOpen: boolean;
@@ -21,6 +23,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   onClose,
 }) => {
   const otherUser = useOtherUser(data);
+
+  const [confirmOpen, setconfirmOpen] = useState(false);
 
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
@@ -40,6 +44,10 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   // TODO: Revisit to understand the structure of drawer
   return (
     <>
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setconfirmOpen(false)}
+      />
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={onClose}>
           <Transition.Child
@@ -138,7 +146,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                           </div>
                           <div className="flex gap-10 my-8">
                             <div
-                              onClick={() => {}}
+                              onClick={() => setconfirmOpen(true)}
                               className="
                             flex
                             flex-col
