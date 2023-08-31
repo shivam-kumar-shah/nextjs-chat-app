@@ -2,12 +2,17 @@
 import { User } from "@prisma/client";
 import React from "react";
 import Image from "next/image";
+import useActiveList from "../hooks/useActiveList";
 
 type AvatarProps = {
   user?: User;
 };
 
 const Avatar = ({ user }: AvatarProps) => {
+  const { members } = useActiveList();
+
+  const isActive = members.indexOf(user?.email!) !== -1;
+
   return (
     <div className="relative">
       <div
@@ -28,8 +33,9 @@ const Avatar = ({ user }: AvatarProps) => {
           fill
         />
       </div>
-      <span
-        className="
+      {isActive && (
+        <span
+          className="
         absolute
         block
         rounded-full
@@ -43,7 +49,8 @@ const Avatar = ({ user }: AvatarProps) => {
         md:h-3
         md:w-3
       "
-      />
+        />
+      )}
     </div>
   );
 };
