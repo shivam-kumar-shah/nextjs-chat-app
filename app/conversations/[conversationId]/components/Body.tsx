@@ -6,7 +6,10 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBox from "./MessageBox";
 import axios from "axios";
 import { pusherClient } from "@/app/libs/pusher";
-import { NEW_MESSAGE_EVENT } from "@/app/constants/pusherConstants";
+import {
+  MESSAGE_UPDATE_EVENT,
+  NEW_MESSAGE_EVENT,
+} from "@/app/constants/pusherConstants";
 import { find } from "lodash";
 
 interface BodyProps {
@@ -37,12 +40,25 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
       bottomRef?.current?.scrollIntoView();
     };
 
+    const updateMessageHandler = (newMessage: FullMessageType) => {
+      setMessages((current) =>
+        current.map((currentMessage) => {
+          if (currentMessage.id === newMessage.id) {
+            return newMessage;
+          }
+          return currentMessage;
+        })
+      );
+    };
+
     pusherClient.subscribe(conversationId);
     pusherClient.bind(NEW_MESSAGE_EVENT, messageHandler);
+    pusherClient.bind(MESSAGE_UPDATE_EVENT, updateMessageHandler);
 
     return () => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind(NEW_MESSAGE_EVENT, messageHandler);
+      pusherClient.unbind(MESSAGE_UPDATE_EVENT, updateMessageHandler);
     };
   }, [conversationId]);
 

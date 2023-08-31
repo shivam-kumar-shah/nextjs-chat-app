@@ -1,6 +1,11 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import { pusherServer } from "@/app/libs/pusher";
+import {
+  CONVERSATION_UPDATE_EVENT,
+  MESSAGE_UPDATE_EVENT,
+} from "@/app/constants/pusherConstants";
 
 interface IParams {
   conversationId?: string;
@@ -56,6 +61,25 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         },
       },
     });
+
+    // TODO: Simplify the logic
+
+    // pusher trigger to send new conversations
+    await pusherServer.trigger(currentUser.email, CONVERSATION_UPDATE_EVENT, {
+      id: conversationId,
+      messages: [updatedMessage],
+    });
+
+    if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
+      return NextResponse.json(conversation);
+    }
+
+    // pusher trigger to mark the currentUser who made the api call as seen
+    await pusherServer.trigger(
+      conversationId!,
+      MESSAGE_UPDATE_EVENT,
+      updatedMessage
+    );
 
     return NextResponse.json(updatedMessage);
   } catch (error: any) {
