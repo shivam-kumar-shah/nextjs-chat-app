@@ -1,6 +1,6 @@
 # NextJS Messenger Clone
 
-<a href="https://nextjs-chat-app-six.vercel.app/" title="NextJs Messenger Clone"><img src="https://github.com/shivam-kumar-shah/nextjs-chat-app/assets/98466713/2276a818-915c-4e60-b787-fe51f8b13a1d" alt="NextJs Messenger Clone Preview"/>
+[<img src="https://github.com/shivam-kumar-shah/nextjs-chat-app/assets/98466713/2276a818-915c-4e60-b787-fe51f8b13a1d" alt="NextJs Messenger Clone Preview">](https://nextjs-chat-app-six.vercel.app/)
 
 A real-time messaging application built with Next.js and TypeScript, inspired by Meta Messenger. This application leverages several modern technologies to provide users with a seamless messaging experience.
 
