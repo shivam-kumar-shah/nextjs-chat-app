@@ -1,6 +1,6 @@
 # NextJS Messenger Clone
 
-![NextJs Messenger Clone](https://github.com/shivam-kumar-shah/nextjs-chat-app/assets/98466713/2276a818-915c-4e60-b787-fe51f8b13a1d)
+[![NextJs Messenger Clone](https://github.com/shivam-kumar-shah/nextjs-chat-app/assets/98466713/2276a818-915c-4e60-b787-fe51f8b13a1d)](https://nextjs-chat-app-six.vercel.app/)
 
 
 A real-time messaging application built with Next.js and TypeScript, inspired by Meta Messenger. This application leverages several modern technologies to provide users with a seamless messaging experience.
@@ -108,6 +108,8 @@ Follow these steps to set up and run the Meta Messenger Clone on your local mach
 ## Deployment
 
 To deploy your Meta Messenger Clone application, you can use platforms like Vercel, Netlify, or deploy it on your own server.
+
+Deployment link - https://nextjs-chat-app-six.vercel.app/
 
 ## Contributing
 
