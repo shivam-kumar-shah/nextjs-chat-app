@@ -50,6 +50,5 @@
                             "@types/lodash":  "^4.14.197",
                             "gh-pages":  "^6.0.0",
                             "prisma":  "^5.2.0"
-                        },
-    "homepage":  "https://shivam-kumar-shah.github.io/nextjs-chat-app"
+                        }
 }
