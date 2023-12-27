@@ -14,6 +14,7 @@ import { find } from "lodash";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
+  setMessages: (message: FullMessageType[]) => void;
 }
 
 const Body: React.FC<BodyProps> = ({ initialMessages }) => {

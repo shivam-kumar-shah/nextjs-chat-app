@@ -6,12 +6,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
 import { CldUploadButton } from "next-cloudinary";
+import { experimental_useOptimistic as useOptimistic } from "react";
 
 type Props = {};
 
 const Form = (props: Props) => {
   const { conversationId } = useConversation();
-
   const {
     register,
     handleSubmit,
