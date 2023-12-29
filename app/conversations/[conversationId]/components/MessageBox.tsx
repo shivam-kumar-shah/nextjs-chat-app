@@ -15,7 +15,6 @@ interface MessageBoxProps {
 
 const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   const session = useSession();
-
   const [imageModalOpen, setImageModalOpen] = useState(false);
 
   const isOwn = session?.data?.user?.email === data?.sender?.email;

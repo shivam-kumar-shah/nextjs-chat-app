@@ -1,11 +1,10 @@
 "use client";
-
-import { FullMessageType } from "@/app/types";
+import { FullMessageType, TempMsg } from "@/app/types";
 import { Conversation, User } from "@prisma/client";
 import Header from "./Header";
 import Body from "./Body";
 import Form from "./Form";
-import { useState } from "react";
+import { useState, experimental_useOptimistic as useOptimistic } from "react";
 
 interface MessageContainerProps {
   initialMessages: FullMessageType[];
@@ -18,12 +17,18 @@ const MessageContainer: React.FC<MessageContainerProps> = ({
   initialMessages,
   conversation,
 }) => {
-  const [messages, setMessages] = useState(initialMessages);
+  const [serverMessages, setServerMessages] = useState(initialMessages);
+  const [tempMsgs, setTempMsgs] = useState<TempMsg[]>([]);
+
   return (
     <>
       <Header conversation={conversation} />
-      <Body initialMessages={messages} setMessages={setMessages} />
-      <Form />
+      <Body
+        messages={serverMessages}
+        setMessages={setServerMessages}
+        pendingMsgs={tempMsgs}
+      />
+      <Form setTempMsgs={setTempMsgs} />
     </>
   );
 };

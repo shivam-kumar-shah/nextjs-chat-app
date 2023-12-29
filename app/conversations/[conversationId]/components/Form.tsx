@@ -1,16 +1,24 @@
 "use client";
 import useConversation from "@/app/hooks/useConversation";
+import { TempMsg } from "@/app/types";
 import axios from "axios";
-import React from "react";
+import { CldUploadButton } from "next-cloudinary";
+import { Dispatch, SetStateAction } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
-import { CldUploadButton } from "next-cloudinary";
-import { experimental_useOptimistic as useOptimistic } from "react";
 
-type Props = {};
+type Props = {
+  setTempMsgs: Dispatch<SetStateAction<TempMsg[]>>;
+};
 
-const Form = (props: Props) => {
+export class APIException extends Error {
+  constructor(private data: any, message: string) {
+    super(message);
+  }
+}
+
+const Form = ({ setTempMsgs }: Props) => {
   const { conversationId } = useConversation();
   const {
     register,
@@ -23,13 +31,42 @@ const Form = (props: Props) => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setValue("message", "", { shouldValidate: true });
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      setValue("message", "", { shouldValidate: true });
+      /**
+       * Previous Approach
+       */
+      // const messageId = genId();
+      // console.log("MessageID", messageId);
+      // setMessages([
+      //   ...messages,
+      //   { id: messageId, body: data.message, pending: true },
+      // ]);
+      const timestamp = Date.now().toString();
+      const tempMsg: TempMsg = {
+        body: data.message,
+        senderTimestamp: timestamp,
+      };
 
-    axios.post("/api/messages", {
-      ...data,
-      conversationId,
-    });
+      setTempMsgs((prev) => [...prev, tempMsg]);
+
+      const result = await axios.post("/api/messages", {
+        ...data,
+        conversationId,
+      });
+      setTempMsgs((prev) =>
+        prev.filter((item) => item.senderTimestamp != timestamp)
+      );
+      if (result.status > 299) throw new APIException(tempMsg, result.data);
+    } catch (err: any) {
+      console.log("ERROR in messageForm", err);
+      if (err instanceof APIException) {
+        setTempMsgs((prev) =>
+          prev.filter((item) => item.senderTimestamp != err.timestamp)
+        );
+      }
+    }
   };
 
   const handleUpload = (result: any) => {
